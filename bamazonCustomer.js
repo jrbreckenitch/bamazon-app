@@ -18,9 +18,20 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   console.log("You are connected to the database.")
-  runSearch();
+  showProducts();
+  // runSearch();
 });
 
+function showProducts(){
+  connection.query("SELECT * FROM products", function (err, result) {
+    if (err) throw err;
+    // console.log(result);
+    for (var i = 0; i < result.length; i++) {
+      console.log("Item id: " + result[i].item_id + " || Product name: " + result[i].product_name + " || Product department: " + result[i].product_department + " || Price: " + result[i].price + " || Stock Quantity: " + result[i].stock_quantity);
+    }
+    runSearch();
+  });
+}
 
 function runSearch() {
     inquirer
