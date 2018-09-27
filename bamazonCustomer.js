@@ -40,34 +40,25 @@ function runSearch() {
         type: "input",
         message: "What is the ID of the item you would you like to buy?",
       },
-      {
-        name: "purchaseQuantity",
-        type: "input",
-        message: "How many units of this item would you like to buy?",  
-      })
+      )
       .then(function(answer) {
-        switch (answer.action) {
-        case "Find item by name":
-          itemNameSearch();
-          break;
-  
-        case "Find all artists who appear more than once":
-          multiSearch();
-          break;
-  
-        case "Find data within a specific range":
-          rangeSearch();
-          break;
-  
-        case "Search for a specific song":
-          songSearch();
-          break;
-  
-        case "Find artists with a top song and top album in the same year":
-          songAndAlbumSearch();
-          break;
-        }
-      });
+          console.log(answer.itemChoice);
+          connection.query("SELECT * FROM products WHERE ?", { item_id: answer.itemChoice }, function(err, res) {
+            console.log(
+              "Item ID: " +
+                res[0].item_id +
+                " || Product Name: " +
+                res[0].product_name +
+                " || Product Department: " +
+                res[0].product_department +
+                " || Price: " +
+                res[0].price +
+                " || Stock Quantity: " +
+                res[0].stock_quantity
+            );
+            runSearch();
+          });
+      }); 
   }
   
   function itemNameSearch() {
