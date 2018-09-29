@@ -42,45 +42,33 @@ function runSearch() {
       )
       .then(function(answer) {
         // console.log(answer.itemChoice);
-        connection.query("SELECT * FROM products WHERE ?", { item_id: answer.itemChoice }, function(err, res) {
-          console.log(
-            "Item ID: " +
-              res[0].item_id +
-              " || Product Name: " +
-              res[0].product_name +
-              " || Product Department: " +
-              res[0].product_department +
-              " || Price: " +
-              res[0].price +
-              " || Stock Quantity: " +
-              res[0].stock_quantity
-        );
-        });
+        var chosenItem = answer.itemChoice;
+        var purchaseAmount = answer.itemAmount;
 
-        connection.query("SELECT * FROM products", function (err, result) {
+        connection.query("SELECT * FROM products WHERE ?", {item_id: chosenItem}, function (err, result) {
+          var newItem = result[0];
+          var newAmount = 0;
           if (err) throw err;
           // console.log(result);
-          var chosenItem;
-          var purchaseAmount;
-          var newAmount;
+          
           // for (var i = 0; i < results.length; i++) {
           //   if (results[i].item_id === answer.itemChoice) {
           //     chosenItem = results[i];
           //   }
           // }
-          for (var i = 0; i < result.length; i++) {
-            if (result[i].item_id === answer.itemChoice) {
-              chosenItem = result[i];
-            }   
-          }
+          // for (var i = 0; i < result.length; i++) {
+          //   if (result[i].item_id === answer.itemChoice) {
+          //     chosenItem = result[i];
+          //   }   
+          // }
 
-          console.log(chosenItem);
+          console.log(newItem.stock_quantity);
 
-          if (chosenItem.stock_quantity > 0 && chosenItem.stock_quantity >= answer.itemAmount) {
+          if (newItem.stock_quantity > 0 && newItem.stock_quantity >= answer.itemAmount) {
             for (var i = 0; i < answer.itemAmount.length; i++) {
               if (answer.itemAmount > 0) {
                 purchaseAmount === parseInt(answer.itemAmount);
-                newAmount === chosenItem.stock_quantity - purchaseAmount;
+                newAmount === newItem.stock_quantity - purchaseAmount;
                 // purchaseAmount--;
               }
             }
@@ -91,7 +79,7 @@ function runSearch() {
                   stock_quantity: newAmount
                 },
                 {
-                  item_id: answer.itemChoice
+                  item_id: chosenItem
                 }
               ]
             )

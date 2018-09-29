@@ -9,7 +9,7 @@ USE bamazon;
 -- Creates the table "people" within animals_db --
 CREATE TABLE products (
   -- Creates a numeric column called "id" which will automatically increment its default value as we create new rows --
-  item_id INTEGER(11) AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  item_id INTEGER AUTO_INCREMENT NOT NULL PRIMARY KEY,
   -- Makes a string column called "name" which cannot contain null --
   product_name VARCHAR(255) NOT NULL,
   -- Makes a boolean column called "has_pet" which cannot contain null --
