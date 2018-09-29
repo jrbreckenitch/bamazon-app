@@ -15,7 +15,7 @@ CREATE TABLE products (
   -- Makes a boolean column called "has_pet" which cannot contain null --
   product_department VARCHAR(255) NOT NULL,
   -- Makes a sting column called "pet_name" --
-  price INTEGER,
+  price FlOAT,
   -- Makes an numeric column called "pet_age" --
   stock_quantity INTEGER
   -- Sets id as this table's primary key which means all data contained within it will be unique --
