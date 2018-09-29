@@ -47,7 +47,7 @@ function runSearch() {
           var newAmount;
           var totalCost = result[0].price * purchaseAmount;
           if (err) throw err;
-          console.log(newItem.stock_quantity);
+          // console.log(newItem.stock_quantity);
           if (newItem.stock_quantity > 0 && newItem.stock_quantity >= purchaseAmount) {
             newAmount = newItem.stock_quantity - purchaseAmount;
               console.log("The cost of " + purchaseAmount + " units of " + result[0].product_name + " is $" + totalCost);
