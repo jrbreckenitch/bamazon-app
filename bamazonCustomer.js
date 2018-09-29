@@ -47,7 +47,7 @@ function runSearch() {
 
         connection.query("SELECT * FROM products WHERE ?", {item_id: chosenItem}, function (err, result) {
           var newItem = result[0];
-          var newAmount = 0;
+          var newAmount;
           if (err) throw err;
           // console.log(result);
           
@@ -64,14 +64,15 @@ function runSearch() {
 
           console.log(newItem.stock_quantity);
 
-          if (newItem.stock_quantity > 0 && newItem.stock_quantity >= answer.itemAmount) {
-            for (var i = 0; i < answer.itemAmount.length; i++) {
-              if (answer.itemAmount > 0) {
-                purchaseAmount === parseInt(answer.itemAmount);
-                newAmount === newItem.stock_quantity - purchaseAmount;
-                // purchaseAmount--;
-              }
-            }
+          if (newItem.stock_quantity > 0 && newItem.stock_quantity >= purchaseAmount) {
+            newAmount = newItem.stock_quantity - purchaseAmount;
+            // for (var i = 0; i < purchaseAmount.length; i++) {
+            //   if (purchaseAmount > 0) {
+            //     // purchaseAmount === parseInt(answer.itemAmount);
+            //     newAmount === parseInt(newItem.stock_quantity) - purchaseAmount;
+            //     // purchaseAmount--;
+            //   }
+            // }
             connection.query(
               "UPDATE products SET ? WHERE ?",
               [
@@ -83,8 +84,9 @@ function runSearch() {
                 }
               ]
             )
+            showProducts();
           }
-          else if (chosenItem.stock_quantity <= 0)  {
+          else if (purchaseAmount > newItem.stock_quantity) {
             console.log("Insufficient quantity to fulfill your order!");
           }      
         });
