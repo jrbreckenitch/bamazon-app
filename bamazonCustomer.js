@@ -3,14 +3,8 @@ var inquirer = require("inquirer");
 
 var connection = mysql.createConnection({
   host: "localhost",
-
-  // Your port; if not 3306
   port: 3306,
-
-  // Your username
   user: "root",
-
-  // Your password
   password: "",
   database: "bamazon"
 });
@@ -33,15 +27,85 @@ function showProducts(){
   });
 }
 
+// function howMany(){
+//   inquirer
+//       .prompt({
+//         name: "itemChoice",
+//         type: "input",
+//         message: "How many of this item would you like to purchase?",
+//       },
+//       )
+//       .then(function(answer) {
+//           console.log(answer.itemChoice);
+//           connection.query("SELECT * FROM products WHERE ?", { item_id: answer.itemChoice }, function(err, res) {
+//             console.log(
+//               "Item ID: " +
+//                 res[0].item_id +
+//                 " || Product Name: " +
+//                 res[0].product_name +
+//                 " || Product Department: " +
+//                 res[0].product_department +
+//                 " || Price: " +
+//                 res[0].price +
+//                 " || Stock Quantity: " +
+//                 res[0].stock_quantity
+//             );
+//             runSearch();
+//           });
+//       }); 
+// }
+
 function runSearch() {
     inquirer
-      .prompt({
+      .prompt([{
         name: "itemChoice",
         type: "input",
         message: "What is the ID of the item you would you like to buy?",
       },
+      {
+        name: "itemAmount",
+        type: "input",
+        message: "How many of the item would you like to buy?"
+      }]
       )
       .then(function(answer) {
+        var chosenItem;
+        var newAmount;
+        for (var i = 0; i < results.length; i++) {
+          if (results[i].item_id === answer.itemChoice) {
+            chosenItem = results[i];
+          }
+        }
+
+        if (chosenItem.stock_quantity > 0) {
+          for (var i = 0; i < results.length; i++) {
+            if (answer.itemAmount > 0) {
+              newAmount === answer.itemAmount;
+              newAmount--;
+            }
+          }
+        }
+
+        if (chosenItem.highest_bid < parseInt(answer.bid)) {
+          // bid was high enough, so update db, let the user know, and start over
+          connection.query(
+            "UPDATE auctions SET ? WHERE ?",
+            [
+              {
+                highest_bid: answer.bid
+              },
+              {
+                id: chosenItem.id
+              }
+            ],
+            function(error) {
+              if (error) throw err;
+              console.log("Bid placed successfully!");
+              start();
+            }
+          );
+        }
+
           console.log(answer.itemChoice);
           connection.query("SELECT * FROM products WHERE ?", { item_id: answer.itemChoice }, function(err, res) {
             console.log(
@@ -56,28 +120,27 @@ function runSearch() {
                 " || Stock Quantity: " +
                 res[0].stock_quantity
             );
-            runSearch();
           });
       }); 
   }
   
-  function itemNameSearch() {
-    inquirer
-      .prompt({
-        name: "item",
-        type: "input",
-        message: "What item would you like to search for?"
-      })
-      .then(function(answer) {
-        var query = "SELECT item_id, product_name, product_department, price, stock_quantity FROM products WHERE ?";
-        connection.query(query, { item: answer.item_id }, function(err, res) {
-          for (var i = 0; i < res.length; i++) {
-            console.log("Item id: " + res[i].item_id + " || Product name: " + res[i].product_name + " || Product department: " + res[i].product_department + " || Price: " + res[i].price + " || Stock Quantity: " + res[i].stock_quantity);
-          }
-          runSearch();
-        });
-      });
-  }
+  // function itemNameSearch() {
+  //   inquirer
+  //     .prompt({
+  //       name: "item",
+  //       type: "input",
+  //       message: "What item would you like to search for?"
+  //     })
+  //     .then(function(answer) {
+  //       var query = "SELECT item_id, product_name, product_department, price, stock_quantity FROM products WHERE ?";
+  //       connection.query(query, { item: answer.item_id }, function(err, res) {
+  //         for (var i = 0; i < res.length; i++) {
+  //           console.log("Item id: " + res[i].item_id + " || Product name: " + res[i].product_name + " || Product department: " + res[i].product_department + " || Price: " + res[i].price + " || Stock Quantity: " + res[i].stock_quantity);
+  //         }
+  //         runSearch();
+  //       });
+  //     });
+  // }
 
 
 // function runSearch() {
