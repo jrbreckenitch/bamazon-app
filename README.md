@@ -16,3 +16,5 @@ MySQL
 Inquirer
 
 Screenshots
+
+![Bamazon Screenshot](/images/bamazonScreenshot.png)
