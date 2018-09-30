@@ -4,6 +4,10 @@ Demo Link
 
 http://youtu.be/OlnlSqpZIV8
 
+Portfolio Link
+
+https://jrbreckenitch.github.io/JamesBreckenitchPortfolio/
+
 Description
 
 The bamazon-app is a node application that allows customers to purchase items from a database. When a customer first launches the app they are shown a list of items that includes the item ID, name, product department, price, and quantity. The customer is then asked what item they would like to purchase and how many. If the requested amount is in stock the customer receives a log of the total price. If the requested amount is not in stock the customer receives a message stating the item is not available.
